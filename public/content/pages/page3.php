@@ -2,15 +2,13 @@
 <html lang="en">
 <head>
     <!-- link style and js files-->
-    <link rel="stylesheet" href="../content/pages/assets/css/page1.css">
-    <script src="assets/js/page1.js"></script>
+    <link rel="stylesheet" href="/content/pages/assets/css/page3.css">
+    <script src="assets/js/page3.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page 1</title>
 </head>
 <body>
-    <p class="content">Page1 Content. Red with css</p>
-    <p id="text">Blue text with js</p>
+    <p>This is the third page!</p>
 </body>
 </html>

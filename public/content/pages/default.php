@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- link style and js files-->
-    <link rel="stylesheet" href="../content/pages/assets/css/page3.css">
-    <script src="assets/js/page3.js"></script>
+    <link rel="stylesheet" href="content/pages/assets/css/default.css">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Page 1</title>
+    <title>Default</title>
 </head>
 <body>
-    <p>This is the third page!</p>
+    <p>This the default page</p>
 </body>
 </html>
