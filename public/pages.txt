@@ -1,7 +1,7 @@
 {
    "index":[
       "default.php",
-      "default.js",
+      ["default.js", "default_2.js"],
       "Home",
       "home"
    ],

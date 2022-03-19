@@ -16,34 +16,39 @@ class Route {
    *
    */
   public static function loadContent($path) {
-    return '<script> XdynamicContent.loadContent("'.PAGES[$path][0].'", "'.PAGES[$path][1].'", "'.PAGES[$path][2].'", "'.$path.'"); </script>';
+    return '<script> XdynamicContent.loadContent("'.PAGES[$path][0].'", ['.PAGES[$path][1].'], "'.PAGES[$path][2].'", "'.$path.'"); </script>';
   }
 
   public static function generate() {
     foreach (PAGES as $path => $page) {
+      if (array_key_exists(3, $page)) {
+        Route::add('/'.$page[3], function() use($path) {
+          echo '<script> XdynamicContent.loadContent("'.PAGES[$path][0].'", ['.PAGES[$path][1].'], "'.PAGES[$path][2].'", "'.PAGES[$path][3].'"); </script>';
+        });
+      }
       if ($path != "404" && $path != "405" && $path != "index")
-        {
-          Route::add('/'.$path, function() use($path) {
-              echo self::loadContent($path);
-          });
+      {
+        Route::add('/'.$path, function() use($path) {
+            echo self::loadContent($path);
+        });
       }
       elseif ($path == "index")
       {
-          Route::add('/', function() {
-              echo '<script> XdynamicContent.loadContent("'.PAGES[$path = "index"][0].'", "'.PAGES[$path][1].'", "'.PAGES[$path][2].'", ""); </script>';
-          });
+        Route::add('/', function() {
+            echo '<script> XdynamicContent.loadContent("'.PAGES["index"][0].'", ['.PAGES["index"][1].'], "'.PAGES["index"][2].'", ""); </script>';
+        });
       }
       elseif ($path == "404")
       {
-          Route::pathNotFound(function($path) {
-              echo self::loadContent("404");
-          });
+        Route::pathNotFound(function($path) {
+            echo self::loadContent("404");
+        });
       }
       elseif ($path == "405")
       {
-          Route::methodNotAllowed(function($path, $method) {
-              echo self::loadContent("405");
-          });
+        Route::methodNotAllowed(function($path, $method) {
+            echo self::loadContent("405");
+        });
       }
     }
   }

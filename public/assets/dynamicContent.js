@@ -1,8 +1,9 @@
 class dynamicContent {
-    loadContent(page, js = Array(), title, path, data = null) {  
+    loadContent(page, js, title, path, data = null) {
+        if (!Array.isArray(js))
+            js = [js];
         var xhttp = new XMLHttpRequest();
         var xpage = "../content/pages/" + page;
-        if (js) var xjs = "../content/pages/assets/js/" + js;
         xhttp.open("POST", xpage, true);
         var me = this;
         xhttp.onreadystatechange = function() {
@@ -10,11 +11,15 @@ class dynamicContent {
                 document.getElementById("dynamic-content").innerHTML = this.responseText;
                 me.updateURL(path, title);
                 me.info = [page, js.slice(), title, path];
-                if (js)
-                    me.loadJS(xjs, false);
+                if (js) {
+                    js.forEach(function(file) {
+                        var xjs = "../content/pages/assets/js/" + js;
+                        me.loadJS(xjs, false);
+                    });
+                }
             }
             if (this.status == 404) {
-                console.log("file not found");
+                me.fileNotFound();
             }
         };
 
@@ -25,29 +30,31 @@ class dynamicContent {
     }
     loadJS(FILE_URL, async = true) {
         var scriptEleExists = document.querySelector('script[src="'+FILE_URL+'"]'); // Does the script tag already exist?
-        if (!scriptEleExists)
-        {
-            let scriptEle = document.createElement("script");
-          
-            scriptEle.setAttribute("src", FILE_URL);
-            scriptEle.setAttribute("type", "text/javascript");
-            scriptEle.setAttribute("async", async);
-          
-            document.body.appendChild(scriptEle);
-          
-            // success event 
-            scriptEle.addEventListener("load", () => {
-              // File loaded
-            });
-             // error event
-            scriptEle.addEventListener("error", (ev) => {
-              // error on loading file
-            });
-        }
+        let scriptEle = document.createElement("script");
+        
+        scriptEle.setAttribute("src", FILE_URL);
+        scriptEle.setAttribute("type", "text/javascript");
+        scriptEle.setAttribute("async", async);
+        
+        document.body.appendChild(scriptEle);
+        
+        // success event 
+        scriptEle.addEventListener("load", () => {
+            // File loaded
+        });
+            // error event
+        scriptEle.addEventListener("error", (ev) => {
+            // error on loading file
+            this.fileNotFound();
+        });
     }
     updateURL(urlPath, title) {
         window.history.replaceState({}, "", "/"+urlPath);
 
         document.title = title;
+    }
+    fileNotFound() {
+        const PAGES = JSON.parse(loadFile("../pages.txt"));
+        this.loadContent(PAGES["404"][0], PAGES["404"][1], PAGES["404"][2], "404");
     }
 }
