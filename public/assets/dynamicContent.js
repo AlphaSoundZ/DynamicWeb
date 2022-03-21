@@ -8,7 +8,6 @@ class dynamicContent {
         var me = this;
         xhttp.onreadystatechange = function() {
             if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("dynamic-content").innerHTML = this.responseText;
                 me.updateURL(path, title);
                 me.info = [page, js.slice(), title, path];
                 if (js) {
@@ -17,13 +16,12 @@ class dynamicContent {
                         me.loadJS(xjs, false);
                     });
                 }
+                document.getElementById("dynamic-content").innerHTML = this.responseText;
             }
             if (this.status == 404) {
                 me.fileNotFound();
             }
         };
-
-        xhttp.setRequestHeader("Content-Type", "application/json");
 
         if (data) xhttp.send(JSON.stringify(data));
         else xhttp.send();
@@ -56,5 +54,15 @@ class dynamicContent {
     fileNotFound() {
         const PAGES = JSON.parse(loadFile("../pages.txt"));
         this.loadContent(PAGES["404"][0], PAGES["404"][1], PAGES["404"][2], "404");
+    }
+    loadFile(filePath) {
+        var result = null;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.open("GET", filePath, true);
+        xmlhttp.send();
+        if (xmlhttp.status==200) {
+          result = xmlhttp.responseText;
+        }
+        return result;
     }
 }

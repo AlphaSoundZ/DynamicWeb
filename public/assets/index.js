@@ -10,15 +10,4 @@ function buttonPressed(path) {
 
 function getInfo() {
     console.log(XdynamicContent.info[0], XdynamicContent.info[1], XdynamicContent.info[2], XdynamicContent.info[3]);
-}
-
-function loadFile(filePath) {
-    var result = null;
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET", filePath, false);
-    xmlhttp.send();
-    if (xmlhttp.status==200) {
-      result = xmlhttp.responseText;
-    }
-    return result;
-}
+}   
